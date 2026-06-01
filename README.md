@@ -24,3 +24,5 @@ The project is in the final verification phase (Phase 7). All core features have
 - [Architecture Specification](specs/architecture_spec.md)
 - [Implementation Progress](PROGRESS.log)
 - [UAT Test Cases](test-case/UAT_TEST_CASES.md)
+
+這是一個自動化的ai工廠，只要將內部的實作部分刪除，並用windows batch寫loop進行流程控制，並用gemini headless模式啟動，便能實現全自動化。
