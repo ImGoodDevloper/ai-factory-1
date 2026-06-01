@@ -1,0 +1,13 @@
+.git
+.gitignore
+node_modules
+target
+*.log
+.env
+.gemini
+specs
+work-scope
+PROJECT_SKELETON.md
+PROGRESS.log
+task-assignment.md
+README.md

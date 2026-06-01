@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "BeforeTool": [
+      {
+        "matcher": "*", 
+        "hooks": [
+          {
+            "name": "test-analysis-subagent",
+            "type": "command",
+            "command": "python3 $GEMINI_PROJECT_DIR/.gemini/hooks/dump_hook.py",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}

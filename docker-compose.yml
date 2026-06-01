@@ -1,0 +1,51 @@
+
+services:
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - SPRING_DATASOURCE_URL=${DB_URL}
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - KES_JWT_SECRET=${KES_JWT_SECRET}
+      - KES_JWT_EXPIRATION_MS=${KES_JWT_EXPIRATION_MS}
+    volumes:
+      - ${DATA_PATH}/h2:/app/data
+      - ${DATA_PATH}/logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - kes-network
+
+  frontend:
+    build:
+      context: ./services/frontend
+      dockerfile: Dockerfile
+    environment:
+      - VITE_API_URL=/api
+    networks:
+      - kes-network
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${DATA_PATH}/media:/app/media:ro
+    ports:
+      - "${NGINX_PORT}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+      frontend:
+        condition: service_started
+    networks:
+      - kes-network
+
+networks:
+  kes-network:
+    driver: bridge
